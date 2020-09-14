@@ -39,6 +39,13 @@ return [
                     .')'
                 .')'
                 .'|/reset\\-password/reset(?:/([^/]++))?(*:205)'
+                .'|/api(?'
+                    .'|(?:/(index)(?:\\.([^/]++))?)?(*:248)'
+                    .'|/(?'
+                        .'|docs(?:\\.([^/]++))?(*:279)'
+                        .'|contexts/(.+)(?:\\.([^/]++))?(*:315)'
+                    .')'
+                .')'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -49,8 +56,11 @@ return [
         136 => [[['_route' => '_profiler_exception', '_controller' => 'web_profiler.controller.exception_panel::body'], ['token'], null, null, false, false, null]],
         149 => [[['_route' => '_profiler_exception_css', '_controller' => 'web_profiler.controller.exception_panel::stylesheet'], ['token'], null, null, false, false, null]],
         159 => [[['_route' => '_profiler', '_controller' => 'web_profiler.controller.profiler::panelAction'], ['token'], null, null, false, true, null]],
-        205 => [
-            [['_route' => 'app_reset_password', 'token' => null, '_controller' => 'App\\Controller\\ResetPasswordController::reset'], ['token'], null, null, false, true, null],
+        205 => [[['_route' => 'app_reset_password', 'token' => null, '_controller' => 'App\\Controller\\ResetPasswordController::reset'], ['token'], null, null, false, true, null]],
+        248 => [[['_route' => 'api_entrypoint', '_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index', '_format'], null, null, false, true, null]],
+        279 => [[['_route' => 'api_doc', '_controller' => 'api_platform.action.documentation', '_format' => '', '_api_respond' => 'true'], ['_format'], null, null, false, true, null]],
+        315 => [
+            [['_route' => 'api_jsonld_context', '_controller' => 'api_platform.jsonld.action.context', '_format' => 'jsonld', '_api_respond' => 'true'], ['shortName', '_format'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],
