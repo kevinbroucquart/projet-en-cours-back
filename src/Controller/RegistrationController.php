@@ -25,7 +25,9 @@ class RegistrationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
-    /**
+    
+
+     /**
      * @Route("/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UsersAuthenticator $authenticator): Response
@@ -91,4 +93,6 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
+
+    
 }

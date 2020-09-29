@@ -6,10 +6,17 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ApiResource(
+ *              normalizationContext={"groups"={"users_read"}}         
+ * )
  */
 class Users implements UserInterface
 {
@@ -17,27 +24,36 @@ class Users implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @groups({"users_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @groups({"users_read"})
+     * @Assert\NotBlank(message="l'email est obligatoire")
+     * @Assert\Email(message= "l'email doit être valide")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @groups({"users_read"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="le mot de passe est obligatoire")
+     * @Assert\Length(min=8, minMessage="Le mot de passe doit faire au minimum 8 caractères")
      */
     private $password;
 
     /**
      * @ORM\Column(type="boolean")
+     * @groups({"users_read"})
+     * 
      */
     private $isVerified = false;
 
