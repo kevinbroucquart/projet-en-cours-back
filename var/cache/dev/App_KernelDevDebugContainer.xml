@@ -527,6 +527,14 @@
         <argument type="service" id=".service_locator.g9CqTPp.App\Controller\SecurityController"/>
       </call>
     </service>
+    <service id="App\Events\EmailSubscriber" class="App\Events\EmailSubscriber" autowire="true" autoconfigure="true">
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="App\Security\EmailVerifier"/>
+    </service>
+    <service id="App\Events\PasswordEncoderSubscriber" class="App\Events\PasswordEncoderSubscriber" autowire="true" autoconfigure="true">
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="security.user_password_encoder.generic"/>
+    </service>
     <service id="App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
@@ -2676,6 +2684,22 @@
           <argument>onSecurityPostDenormalize</argument>
         </argument>
         <argument>1</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.view</argument>
+        <argument type="collection">
+          <argument type="service" id="App\Events\EmailSubscriber"/>
+          <argument>sendMail</argument>
+        </argument>
+        <argument>31</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.view</argument>
+        <argument type="collection">
+          <argument type="service" id="App\Events\PasswordEncoderSubscriber"/>
+          <argument>encodePassword</argument>
+        </argument>
+        <argument>33</argument>
       </call>
       <call method="addListener">
         <argument>kernel.response</argument>
@@ -6588,6 +6612,10 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SecurityController" class="App\Controller\SecurityController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\EventDispatcher\EventSubscriberInterface.0.App\Events\EmailSubscriber" class="App\Events\EmailSubscriber" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Events\EmailSubscriber" class="App\Events\EmailSubscriber" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\EventDispatcher\EventSubscriberInterface.0.App\Events\PasswordEncoderSubscriber" class="App\Events\PasswordEncoderSubscriber" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Events\PasswordEncoderSubscriber" class="App\Events\PasswordEncoderSubscriber" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\ChangePasswordFormType" class="App\Form\ChangePasswordFormType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\RegistrationFormType" class="App\Form\RegistrationFormType" autowire="true" abstract="true"/>
