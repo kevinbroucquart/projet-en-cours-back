@@ -15,7 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  * @ApiResource(
- *              normalizationContext={"groups"={"users_read"}}         
+ *              normalizationContext={"groups"={"users_read"}},
+ *              denormalizationContext={"groups"={"users_write"}}
+ *                       
  * )
  */
 class Users implements UserInterface
@@ -30,7 +32,7 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @groups({"users_read"})
+     * @groups({"users_read", "users_write"})
      * @Assert\NotBlank(message="l'email est obligatoire")
      * @Assert\Email(message= "l'email doit être valide")
      */
@@ -45,6 +47,7 @@ class Users implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @groups({"users_write"})
      * @Assert\NotBlank(message="le mot de passe est obligatoire")
      * @Assert\Length(min=8, minMessage="Le mot de passe doit faire au minimum 8 caractères")
      */
@@ -52,7 +55,7 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @groups({"users_read"})
+     * @groups({"users_write"})
      * 
      */
     private $isVerified = false;
