@@ -30,6 +30,7 @@ class EmailSubscriber implements EventSubscriberInterface {
         ];
     }
 
+    //Send mail for verify email
     public function sendMail(ViewEvent $event)
     {
         $user = $event->getControllerResult();

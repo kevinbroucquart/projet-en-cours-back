@@ -7,7 +7,9 @@ use App\Repository\GlobalPropertyAttributeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      attributes={"security"="is_granted('ROLE_ADMIN')"} 
+ * )
  * @ORM\Entity(repositoryClass=GlobalPropertyAttributeRepository::class)
  */
 class GlobalPropertyAttribute
