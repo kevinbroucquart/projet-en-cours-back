@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -59,6 +61,16 @@ class Users implements UserInterface
      * 
      */
     private $isVerified = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity=GlobalPropertyAttribute::class, mappedBy="relation")
+     */
+    private $globalPropertyAttributes;
+
+    public function __construct()
+    {
+        $this->globalPropertyAttributes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -146,6 +158,37 @@ class Users implements UserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GlobalPropertyAttribute[]
+     */
+    public function getGlobalPropertyAttributes(): Collection
+    {
+        return $this->globalPropertyAttributes;
+    }
+
+    public function addGlobalPropertyAttribute(GlobalPropertyAttribute $globalPropertyAttribute): self
+    {
+        if (!$this->globalPropertyAttributes->contains($globalPropertyAttribute)) {
+            $this->globalPropertyAttributes[] = $globalPropertyAttribute;
+            $globalPropertyAttribute->setRelation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGlobalPropertyAttribute(GlobalPropertyAttribute $globalPropertyAttribute): self
+    {
+        if ($this->globalPropertyAttributes->contains($globalPropertyAttribute)) {
+            $this->globalPropertyAttributes->removeElement($globalPropertyAttribute);
+            // set the owning side to null (unless already changed)
+            if ($globalPropertyAttribute->getRelation() === $this) {
+                $globalPropertyAttribute->setRelation(null);
+            }
+        }
 
         return $this;
     }
