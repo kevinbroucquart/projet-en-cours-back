@@ -174,7 +174,7 @@ class Users implements UserInterface
     {
         if (!$this->globalPropertyAttributes->contains($globalPropertyAttribute)) {
             $this->globalPropertyAttributes[] = $globalPropertyAttribute;
-            $globalPropertyAttribute->setRelation($this);
+            $globalPropertyAttribute->setUsers($this);
         }
 
         return $this;
@@ -185,8 +185,8 @@ class Users implements UserInterface
         if ($this->globalPropertyAttributes->contains($globalPropertyAttribute)) {
             $this->globalPropertyAttributes->removeElement($globalPropertyAttribute);
             // set the owning side to null (unless already changed)
-            if ($globalPropertyAttribute->getRelation() === $this) {
-                $globalPropertyAttribute->setRelation(null);
+            if ($globalPropertyAttribute->getUsers() === $this) {
+                $globalPropertyAttribute->setUsers(null);
             }
         }
 
